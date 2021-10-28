@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.objenesis.SpringObjenesis;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,5 +41,12 @@ public class UserController {
     public List<UserDto> getAllUsers(@RequestHeader(value = "adminId") String adminId){
         logger.info("Gathering all members...");
         return userService.getAllUsers(adminId);
+    }
+
+    @GetMapping(path = "/{userId}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto getSpecificUser(@RequestHeader(value = "adminId") String adminId, @PathVariable String userId){
+        logger.info("Getting data on specific user..");
+        return userService.getSpecificUser(adminId, userId);
     }
 }

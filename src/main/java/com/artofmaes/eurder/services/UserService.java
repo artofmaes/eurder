@@ -49,6 +49,11 @@ public class UserService {
 
     }
 
+    public UserDto getSpecificUser(String adminId, String userId){
+        assertAdminId(adminId);
+        return userMapper.toDTO(userRepository.getUser(userId));
+    }
+
     private void assertAdminId(String userId){
         User user = fetchUserIfExist(userId);
         if(!user.isAdmin()){
