@@ -1,15 +1,12 @@
-package com.artofmaes.eurder.api;
+package com.artofmaes.eurder.api.controller;
 
-import com.artofmaes.eurder.api.dto.user.CreateAdminDto;
 import com.artofmaes.eurder.api.dto.user.CreateUserDto;
 import com.artofmaes.eurder.api.dto.user.UserDto;
 import com.artofmaes.eurder.services.UserService;
-import io.swagger.v3.oas.annotations.headers.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.objenesis.SpringObjenesis;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.artofmaes.eurder.api;
+package com.artofmaes.eurder.api.controller;
 
 import com.artofmaes.eurder.api.dto.user.CreateAdminDto;
 import com.artofmaes.eurder.api.dto.user.UserDto;
