@@ -1,5 +1,6 @@
 package com.artofmaes.eurder.domain;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import com.artofmaes.eurder.domain.exceptions.InvalidMailException;
@@ -108,5 +109,18 @@ public class User {
 
     public boolean isAdmin() {
         return admin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(mailAddress, user.mailAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mailAddress);
     }
 }

@@ -39,6 +39,19 @@ public class UserServiceTest {
     }
 
     @Test
+    void whenCallingSpecificUser_ThrowExceptionsIfUserCallingTheMethodIsNotAdmin(){
+        CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
+                "", "", "12340", "", "");
+        CreateUserDto createUserDto2 = new CreateUserDto("Franky", "From da Block", "franky@fromdablock.com",
+                "", "", "12340", "", "");
+
+        UserDto userThatIsNotAdmin = userService.createNewUser(createUserDto);
+        UserDto user = userService.createNewUser(createUserDto2);
+        Assertions.assertThrows(UnauthorizedUserException.class, () -> userService.getSpecificUser(userThatIsNotAdmin.getUserId(), user.getUserId()));
+    }
+
+
+    @Test
     void whenCallingAllUsersAsAdmin_ShowAllMembersList(){
         CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
                 "", "", "12340", "", "");
@@ -51,4 +64,21 @@ public class UserServiceTest {
         List<UserDto> users = userService.getAllUsers(admin.getUserId());
         Assertions.assertTrue(users.stream().anyMatch(user -> user.getUserId().equals(user1.getUserId())));
     }
+
+    @Test
+    void whenCallingSpecificUserAsAdmin_ShowSpecificMember(){
+        CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
+                "", "", "12340", "", "");
+        UserDto user1 = userService.createNewUser(createUserDto);
+
+        CreateAdminDto createAdminDto = new CreateAdminDto("Franky", "From da Hill", "franky@fromdahill.com",
+                "", "", "12340", "", "");
+        UserDto admin = userService.createNewAdmin(createAdminDto);
+
+        UserDto user = userService.getSpecificUser(admin.getUserId(), user1.getUserId());
+        Assertions.assertEquals(user.getMailAddress(), user1.getMailAddress());
+    }
+
+
+
 }
