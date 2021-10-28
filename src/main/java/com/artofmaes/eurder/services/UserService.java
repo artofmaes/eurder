@@ -19,7 +19,7 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public UserDto createNewUser(CreateUserDto createUserDto){
+    public UserDto createNewUser(CreateUserDto createUserDto) {
         User user = new User(createUserDto.getFirstName(), createUserDto.getLastName(), createUserDto.getMailAddress(),
                 createUserDto.getStreet(), createUserDto.getStreetNumber(), createUserDto.getPostalCode(),
                 createUserDto.getCity(), createUserDto.getPhoneNumber());

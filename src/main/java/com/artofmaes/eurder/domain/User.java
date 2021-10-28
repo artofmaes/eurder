@@ -36,7 +36,7 @@ public class User {
     }
 
     public void setMailAddress(String mailAddress) {
-        if(!EmailValidator.getInstance().isValid(mailAddress)){
+        if (!EmailValidator.getInstance().isValid(mailAddress)) {
             logger.error("Mail is incorrect!");
             throw new InvalidMailException("Invalid Email");
         }
@@ -60,11 +60,12 @@ public class User {
     }
 
     private void checkIfEmpty(String itemToValidate, String item) {
-        if(itemToValidate.isEmpty() || itemToValidate.isBlank()){
+        if (itemToValidate.isEmpty() || itemToValidate.isBlank()) {
             logger.error(item + " required!");
             throw new IllegalArgumentException(item + " required");
         }
     }
+
     public String getUserId() {
         return userId;
     }

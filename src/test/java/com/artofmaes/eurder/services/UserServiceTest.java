@@ -13,15 +13,15 @@ public class UserServiceTest {
 
 
     @Test
-    void whenCreatingUser_ReturnACorrectlyFilledUserDto(){
-        CreateUserDto createUserDto = new CreateUserDto("Bobby","From da Block","bobby@fromdablock.com",
-                "","","12340", "","");
+    void whenCreatingUser_ReturnACorrectlyFilledUserDto() {
+        CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
+                "", "", "12340", "", "");
 
         UserDto createdUser = userService.createNewUser(createUserDto);
 
         Assertions.assertNotNull(createdUser.getUserId());
-        Assertions.assertEquals("Bobby",createdUser.getFirstName());
-        Assertions.assertEquals("From da Block",createdUser.getLastName());
+        Assertions.assertEquals("Bobby", createdUser.getFirstName());
+        Assertions.assertEquals("From da Block", createdUser.getLastName());
         Assertions.assertEquals("bobby@fromdablock.com", createdUser.getMailAddress());
         Assertions.assertEquals("12340", createdUser.getPostalCode());
     }

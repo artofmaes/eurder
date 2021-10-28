@@ -24,7 +24,7 @@ public class UserController {
     //POST
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@RequestBody CreateUserDto createUserDto){
+    public UserDto createUser(@RequestBody CreateUserDto createUserDto) {
         logger.info("Creating a new user for email: " + createUserDto.getMailAddress());
         return userService.createNewUser(createUserDto);
     }

@@ -13,8 +13,7 @@ public class UserRepository {
         this.userList = new ConcurrentHashMap<>();
     }
 
-    public User addUser(User user){
+    public void addUser(User user) {
         userList.put(user.getUserId(), user);
-        return user;
     }
 }
