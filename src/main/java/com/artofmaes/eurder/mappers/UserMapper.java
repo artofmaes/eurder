@@ -1,4 +1,4 @@
-package com.artofmaes.eurder.api.dto.mappers;
+package com.artofmaes.eurder.mappers;
 
 import com.artofmaes.eurder.api.dto.user.UserDto;
 import com.artofmaes.eurder.domain.User;
