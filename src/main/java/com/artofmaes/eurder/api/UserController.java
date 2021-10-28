@@ -3,11 +3,14 @@ package com.artofmaes.eurder.api;
 import com.artofmaes.eurder.api.dto.user.CreateUserDto;
 import com.artofmaes.eurder.api.dto.user.UserDto;
 import com.artofmaes.eurder.services.UserService;
+import io.swagger.v3.oas.annotations.headers.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -27,5 +30,13 @@ public class UserController {
     public UserDto createUser(@RequestBody CreateUserDto createUserDto) {
         logger.info("Creating a new user for email: " + createUserDto.getMailAddress());
         return userService.createNewUser(createUserDto);
+    }
+
+    //GET
+    @GetMapping(produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserDto> getAllUsers(@RequestHeader(value = "adminId") String adminId){
+        logger.info("Gathering all members...");
+        return userService.getAllUsers(adminId);
     }
 }

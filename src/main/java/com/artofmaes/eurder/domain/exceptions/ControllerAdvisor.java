@@ -18,4 +18,10 @@ public class ControllerAdvisor {
         logger.error("Invalid mail: " + exception.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
+
+    @ExceptionHandler
+    public void handleUnauthorizedUserException(UnauthorizedUserException exception, HttpServletResponse response) throws IOException{
+        logger.error("You don't have the proper authorization to do this.");
+        response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+    }
 }

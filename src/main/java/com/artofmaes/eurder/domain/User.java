@@ -14,21 +14,21 @@ public class User {
     private final String streetNumber;
     private final String city;
     private final String phoneNumber;
-    private final boolean admin;
     private final Logger logger = LoggerFactory.getLogger(User.class);
 
+    private boolean admin;
     private String firstName;
     private String lastName;
     private String postalCode;
     private String mailAddress;
 
-    public User(String firstName, String lastName, String mailAddress, String street, String streetNumber, String postalCode, String city, String phoneNumber) {
+    public User(String firstName, String lastName, String mailAddress, String street, String streetNumber, String postalCode, String city, String phoneNumber, boolean admin) {
         this.userId = UUID.randomUUID().toString();
         this.street = street;
         this.streetNumber = streetNumber;
         this.city = city;
         this.phoneNumber = phoneNumber;
-        this.admin = false;
+        setAdminStatus(admin);
         setFirstName(firstName);
         setLastName(lastName);
         setPostalCode(postalCode);
@@ -57,6 +57,10 @@ public class User {
     public void setPostalCode(String postalCode) {
         checkIfEmpty(postalCode, "Postal code");
         this.postalCode = postalCode;
+    }
+
+    public void setAdminStatus(boolean adminStatus){
+        this.admin = adminStatus;
     }
 
     private void checkIfEmpty(String itemToValidate, String item) {

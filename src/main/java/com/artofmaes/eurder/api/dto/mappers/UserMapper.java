@@ -18,6 +18,6 @@ public class UserMapper {
     }
 
     public User toEntity(UserDto userDto) {
-        return new User(userDto.getFirstName(), userDto.getLastName(), userDto.getMailAddress(), userDto.getStreet(), userDto.getStreetNumber(), userDto.getPostalCode(), userDto.getCity(), userDto.getPhoneNumber());
+        return new User(userDto.getFirstName(), userDto.getLastName(), userDto.getMailAddress(), userDto.getStreet(), userDto.getStreetNumber(), userDto.getPostalCode(), userDto.getCity(), userDto.getPhoneNumber(), userDto.isAdmin());
     }
 }

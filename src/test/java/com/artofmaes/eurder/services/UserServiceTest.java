@@ -1,11 +1,15 @@
 package com.artofmaes.eurder.services;
 
 import com.artofmaes.eurder.api.dto.mappers.UserMapper;
+import com.artofmaes.eurder.api.dto.user.CreateAdminDto;
 import com.artofmaes.eurder.api.dto.user.CreateUserDto;
 import com.artofmaes.eurder.api.dto.user.UserDto;
+import com.artofmaes.eurder.domain.exceptions.UnauthorizedUserException;
 import com.artofmaes.eurder.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public class UserServiceTest {
 
@@ -24,5 +28,27 @@ public class UserServiceTest {
         Assertions.assertEquals("From da Block", createdUser.getLastName());
         Assertions.assertEquals("bobby@fromdablock.com", createdUser.getMailAddress());
         Assertions.assertEquals("12340", createdUser.getPostalCode());
+    }
+
+    @Test
+    void whenCallingAllUsers_ThrowExceptionsIfUserCallingTheMethodIsNotAdmin(){
+        CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
+                "", "", "12340", "", "");
+        UserDto userThatIsNotAdmin = userService.createNewUser(createUserDto);
+        Assertions.assertThrows(UnauthorizedUserException.class, () -> userService.getAllUsers(userThatIsNotAdmin.getUserId()));
+    }
+
+    @Test
+    void whenCallingAllUsersAsAdmin_ShowAllMembersList(){
+        CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
+                "", "", "12340", "", "");
+        UserDto user1 = userService.createNewUser(createUserDto);
+
+        CreateAdminDto createAdminDto = new CreateAdminDto("Franky", "From da Hill", "franky@fromdahill.com",
+                "", "", "12340", "", "");
+        UserDto admin = userService.createNewAdmin(createAdminDto);
+
+        List<UserDto> users = userService.getAllUsers(admin.getUserId());
+        Assertions.assertTrue(users.stream().anyMatch(user -> user.getUserId().equals(user1.getUserId())));
     }
 }
