@@ -1,6 +1,9 @@
 package com.artofmaes.eurder.domain;
 
+import java.util.UUID;
+
 public class Item {
+    private final String itemId;
     private final String name;
     private final String description;
     private final double price;
@@ -8,11 +11,16 @@ public class Item {
     private final StockSize stockSize;
 
     public Item(String name, String description, double price, int stock) {
+        this.itemId = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.stockSize = setStockSize(stock);
+    }
+
+    public String getItemId() {
+        return itemId;
     }
 
     public StockSize getStockSize() {
