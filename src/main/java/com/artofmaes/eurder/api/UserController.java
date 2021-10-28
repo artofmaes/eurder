@@ -1,5 +1,6 @@
 package com.artofmaes.eurder.api;
 
+import com.artofmaes.eurder.api.dto.user.CreateAdminDto;
 import com.artofmaes.eurder.api.dto.user.CreateUserDto;
 import com.artofmaes.eurder.api.dto.user.UserDto;
 import com.artofmaes.eurder.services.UserService;
@@ -31,6 +32,7 @@ public class UserController {
         logger.info("Creating a new user for email: " + createUserDto.getMailAddress());
         return userService.createNewUser(createUserDto);
     }
+
 
     //GET
     @GetMapping(produces = "application/json")
