@@ -2,6 +2,7 @@ package com.artofmaes.eurder.api.controller;
 
 import com.artofmaes.eurder.api.dto.item.CreateItemDto;
 import com.artofmaes.eurder.api.dto.item.ItemDto;
+import com.artofmaes.eurder.api.dto.item.UpdateItemDto;
 import com.artofmaes.eurder.services.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,11 @@ public class ItemController {
         return itemService.getAllItems(adminId);
     }
 
-
-
     //PUT
+    @PutMapping(consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public ItemDto updateItem(@RequestHeader(value = "adminId") String adminId, @RequestBody UpdateItemDto updateItemDto){
+        logger.info("Trying to update item with name " + updateItemDto.getName());
+        return itemService.updateItem(updateItemDto, adminId);
+    }
 }
