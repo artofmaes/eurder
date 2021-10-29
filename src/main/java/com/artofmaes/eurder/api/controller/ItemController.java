@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/items")
 public class ItemController {
@@ -28,9 +30,15 @@ public class ItemController {
         return itemService.createNewItem(createItemDto, adminId);
     }
 
-    //PUT
-
-
     //GET
+    @GetMapping(produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ItemDto> getAllItems(@RequestHeader(value = "adminId") String adminId){
+        logger.info("Trying to gather all items by request of user " + adminId);
+        return itemService.getAllItems(adminId);
+    }
 
+
+
+    //PUT
 }

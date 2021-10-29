@@ -10,6 +10,9 @@ import com.artofmaes.eurder.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
@@ -29,5 +32,12 @@ public class ItemService {
                 createItemDto.getPrice(), createItemDto.getStock());
         itemRepository.addItem(item);
        return itemMapper.toDTO(item);
+    }
+
+    public List<ItemDto> getAllItems(String adminId){
+        userService.assertAdminId(adminId);
+        return itemRepository.getItems().stream()
+                .map(itemMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
