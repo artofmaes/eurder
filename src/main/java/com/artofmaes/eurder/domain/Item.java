@@ -4,11 +4,12 @@ import java.util.UUID;
 
 public class Item {
     private final String itemId;
-    private final String name;
-    private final String description;
-    private final double price;
-    private final int stock;
     private final StockSize stockSize;
+
+    private String name;
+    private String description;
+    private double price;
+    private int stock;
 
     public Item(String name, String description, double price, int stock) {
         this.itemId = UUID.randomUUID().toString();
@@ -17,6 +18,22 @@ public class Item {
         this.price = price;
         this.stock = stock;
         this.stockSize = setStockSize(stock);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public String getItemId() {

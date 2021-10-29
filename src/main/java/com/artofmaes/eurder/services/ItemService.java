@@ -2,9 +2,11 @@ package com.artofmaes.eurder.services;
 
 import com.artofmaes.eurder.api.dto.item.CreateItemDto;
 import com.artofmaes.eurder.api.dto.item.ItemDto;
+import com.artofmaes.eurder.api.dto.item.UpdateItemDto;
 import com.artofmaes.eurder.api.dto.mappers.ItemMapper;
 import com.artofmaes.eurder.api.dto.mappers.UserMapper;
 import com.artofmaes.eurder.domain.Item;
+import com.artofmaes.eurder.domain.exceptions.ItemNotFoundException;
 import com.artofmaes.eurder.repositories.ItemRepository;
 import com.artofmaes.eurder.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +41,26 @@ public class ItemService {
         return itemRepository.getItems().stream()
                 .map(itemMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public ItemDto updateItem(UpdateItemDto updateItemDto, String adminId) {
+        userService.assertAdminId(adminId);
+        Item toUpdate = fetchItemByName(updateItemDto.getName());
+        toUpdate.setName(updateItemDto.getName());
+        toUpdate.setDescription(updateItemDto.getDescription());
+        toUpdate.setPrice(updateItemDto.getPrice());
+        toUpdate.setStock(updateItemDto.getStock());
+
+        itemRepository.addItem(toUpdate);
+        return itemMapper.toDTO(toUpdate);
+    }
+
+    private Item fetchItemByName(String itemName) {
+        Item item = itemRepository.getItemByName(itemName);
+        if(item == null){
+            throw new ItemNotFoundException("Item with name " + itemName +" not found.");
+        }
+
+        return item;
     }
 }

@@ -1,6 +1,7 @@
 package com.artofmaes.eurder.services;
 
 import com.artofmaes.eurder.api.dto.item.CreateItemDto;
+import com.artofmaes.eurder.api.dto.item.UpdateItemDto;
 import com.artofmaes.eurder.api.dto.mappers.ItemMapper;
 import com.artofmaes.eurder.api.dto.mappers.UserMapper;
 import com.artofmaes.eurder.api.dto.user.CreateAdminDto;
@@ -15,33 +16,33 @@ import org.junit.jupiter.api.Test;
 public class ItemServiceTest {
 
     UserService userService = new UserService(new UserRepository(), new UserMapper());
-    ItemService itemService = new ItemService(new ItemRepository(),new ItemMapper(), userService);
+    ItemService itemService = new ItemService(new ItemRepository(), new ItemMapper(), userService);
 
 
     @Test
-    void whenAddingAnItem_ThrowExceptionWhenUserIsNotAdmin(){
+    void whenAddingAnItem_ThrowExceptionWhenUserIsNotAdmin() {
         CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
                 "", "", "12340", "", "");
         UserDto member = userService.createNewUser(createUserDto);
 
-        CreateItemDto createItemDto = new CreateItemDto("Banana","Nice yellow bananas from the wonderful south", 1.99, 16);
+        CreateItemDto createItemDto = new CreateItemDto("Banana", "Nice yellow bananas from the wonderful south", 1.99, 16);
         Assertions.assertThrows(UnauthorizedUserException.class, () -> itemService.createNewItem(createItemDto, member.getUserId()));
 
     }
 
     @Test
-    void whenAddingAnItem_ReturnItemWhenUserIsAdmin(){
+    void whenAddingAnItem_ReturnItemWhenUserIsAdmin() {
         CreateAdminDto createAdminDto = new CreateAdminDto("Franky", "From da Hill", "franky@fromdahill.com",
                 "", "", "12340", "", "");
         UserDto admin = userService.createNewAdmin(createAdminDto);
 
-        CreateItemDto createItemDto = new CreateItemDto("Banana","Nice yellow bananas from the wonderful south", 1.99, 16);
-        Assertions.assertDoesNotThrow(() ->itemService.createNewItem(createItemDto, admin.getUserId()));
+        CreateItemDto createItemDto = new CreateItemDto("Banana", "Nice yellow bananas from the wonderful south", 1.99, 16);
+        Assertions.assertDoesNotThrow(() -> itemService.createNewItem(createItemDto, admin.getUserId()));
 
     }
 
     @Test
-    void whenGettingAllItems_ThrowExceptionWhenUserIsNotAdmin(){
+    void whenGettingAllItems_ThrowExceptionWhenUserIsNotAdmin() {
         CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
                 "", "", "12340", "", "");
         UserDto member = userService.createNewUser(createUserDto);
@@ -49,26 +50,67 @@ public class ItemServiceTest {
                 "", "", "12340", "", "");
         UserDto admin = userService.createNewAdmin(createAdminDto);
 
-        CreateItemDto createItemDto = new CreateItemDto("Banana","Nice yellow bananas from the wonderful south", 1.99, 16);
-        CreateItemDto createItemDto2 = new CreateItemDto("Apple","Nice red apples from the wonderful North", 1.99, 4);
+        CreateItemDto createItemDto = new CreateItemDto("Banana", "Nice yellow bananas from the wonderful south", 1.99, 16);
+        CreateItemDto createItemDto2 = new CreateItemDto("Apple", "Nice red apples from the wonderful North", 1.99, 4);
         itemService.createNewItem(createItemDto, admin.getUserId());
         itemService.createNewItem(createItemDto2, admin.getUserId());
 
-        Assertions.assertThrows(UnauthorizedUserException.class, ()-> itemService.getAllItems(member.getUserId()));
+        Assertions.assertThrows(UnauthorizedUserException.class, () -> itemService.getAllItems(member.getUserId()));
     }
 
     @Test
-    void whenGettingAllItems_DoesNotThrowExceptionWhenUserIsAdmin(){
+    void whenGettingAllItems_DoesNotThrowExceptionWhenUserIsAdmin() {
         CreateAdminDto createAdminDto = new CreateAdminDto("Franky", "From da Hill", "franky@fromdahill.com",
                 "", "", "12340", "", "");
         UserDto admin = userService.createNewAdmin(createAdminDto);
 
-        CreateItemDto createItemDto = new CreateItemDto("Banana","Nice yellow bananas from the wonderful south", 1.99, 16);
-        CreateItemDto createItemDto2 = new CreateItemDto("Apple","Nice red apples from the wonderful North", 1.99, 4);
+        CreateItemDto createItemDto = new CreateItemDto("Banana", "Nice yellow bananas from the wonderful south", 1.99, 16);
+        CreateItemDto createItemDto2 = new CreateItemDto("Apple", "Nice red apples from the wonderful North", 1.99, 4);
         itemService.createNewItem(createItemDto, admin.getUserId());
         itemService.createNewItem(createItemDto2, admin.getUserId());
 
-        Assertions.assertDoesNotThrow(() ->itemService.getAllItems(admin.getUserId()));
+        Assertions.assertDoesNotThrow(() -> itemService.getAllItems(admin.getUserId()));
+    }
+
+    @Test
+    void whenUpdatingAnItem_ThrowsExceptionIfUserIsNotAdmin(){
+        CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
+                "", "", "12340", "", "");
+        UserDto member = userService.createNewUser(createUserDto);
+
+        CreateAdminDto createAdminDto = new CreateAdminDto("Franky", "From da Hill", "franky@fromdahill.com",
+                "", "", "12340", "", "");
+        UserDto admin = userService.createNewAdmin(createAdminDto);
+
+        CreateItemDto createItemDto = new CreateItemDto("Banana", "Nice yellow bananas from the wonderful south", 1.99, 16);
+        CreateItemDto createItemDto2 = new CreateItemDto("Apple", "Nice red apples from the wonderful North", 1.99, 4);
+        itemService.createNewItem(createItemDto, admin.getUserId());
+        itemService.createNewItem(createItemDto2, admin.getUserId());
+
+        UpdateItemDto updateItemDto = new UpdateItemDto("Banana", "Nice yellow bananas from the wonderful south", 1.99, 9);
+
+        Assertions.assertThrows(UnauthorizedUserException.class, () -> itemService.updateItem(updateItemDto, member.getUserId()));
+
 
     }
+
+//    @Test
+//    void whenUpdatingAnItem_DoesNotThrowExceptionIfUserIsAdmin(){
+//        CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
+//                "", "", "12340", "", "");
+//        UserDto member = userService.createNewUser(createUserDto);
+//
+//        CreateAdminDto createAdminDto = new CreateAdminDto("Franky", "From da Hill", "franky@fromdahill.com",
+//                "", "", "12340", "", "");
+//        UserDto admin = userService.createNewAdmin(createAdminDto);
+//
+//        CreateItemDto createItemDto = new CreateItemDto("banana", "Nice yellow bananas from the wonderful south", 1.99, 16);
+//        CreateItemDto createItemDto2 = new CreateItemDto("apple", "Nice red apples from the wonderful North", 1.99, 4);
+//        itemService.createNewItem(createItemDto, admin.getUserId());
+//        itemService.createNewItem(createItemDto2, admin.getUserId());
+//
+//        UpdateItemDto updateItemDto = new UpdateItemDto("banana", "Nice yellow bananas from the wonderful south", 1.99, 9);
+//
+//        Assertions.assertDoesNotThrow(() -> itemService.updateItem(updateItemDto, admin.getUserId()));
+//    }
 }
