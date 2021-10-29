@@ -53,7 +53,7 @@ public class UserService {
         return userMapper.toDTO(userRepository.getUser(userId));
     }
 
-    private void assertAdminId(String userId){
+    public void assertAdminId(String userId){
         User user = fetchUserIfExist(userId);
         if(!user.isAdmin()){
             throw new UnauthorizedUserException("You are not an admin.");
@@ -68,4 +68,6 @@ public class UserService {
         }
         return user;
     }
+
+
 }

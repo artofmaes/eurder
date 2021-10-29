@@ -14,10 +14,12 @@ public class UserMapper {
     }
 
     public UserDto toDTO(User user) {
-        return new UserDto(user.getUserId(), user.getFirstName(), user.getLastName(), user.getMailAddress(), user.getStreet(), user.getStreetNumber(), user.getPostalCode(), user.getCity(), user.getPhoneNumber(), user.isAdmin());
+        return new UserDto(user.getUserId(), user.getFirstName(), user.getLastName(), user.getMailAddress(),
+                user.getStreet(), user.getStreetNumber(), user.getPostalCode(), user.getCity(), user.getPhoneNumber(), user.isAdmin());
     }
 
     public User toEntity(UserDto userDto) {
-        return new User(userDto.getFirstName(), userDto.getLastName(), userDto.getMailAddress(), userDto.getStreet(), userDto.getStreetNumber(), userDto.getPostalCode(), userDto.getCity(), userDto.getPhoneNumber(), userDto.isAdmin());
+        return new User(userDto.getFirstName(), userDto.getLastName(), userDto.getMailAddress(),
+                userDto.getStreet(), userDto.getStreetNumber(), userDto.getPostalCode(), userDto.getCity(), userDto.getPhoneNumber(), userDto.isAdmin());
     }
 }

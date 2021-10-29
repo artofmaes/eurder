@@ -123,4 +123,20 @@ public class User {
     public int hashCode() {
         return Objects.hash(mailAddress);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", street='" + street + '\'' +
+                ", streetNumber='" + streetNumber + '\'' +
+                ", city='" + city + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", admin=" + admin +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", mailAddress='" + mailAddress + '\'' +
+                '}';
+    }
 }
