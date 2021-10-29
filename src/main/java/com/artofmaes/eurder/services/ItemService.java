@@ -43,9 +43,9 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-    public ItemDto updateItem(UpdateItemDto updateItemDto, String adminId) {
+    public ItemDto updateItem(UpdateItemDto updateItemDto, String itemId ,String adminId) {
         userService.assertAdminId(adminId);
-        Item toUpdate = fetchItemByName(updateItemDto.getName());
+        Item toUpdate = fetchItemById(itemId);
         toUpdate.setName(updateItemDto.getName());
         toUpdate.setDescription(updateItemDto.getDescription());
         toUpdate.setPrice(updateItemDto.getPrice());
@@ -55,12 +55,10 @@ public class ItemService {
         return itemMapper.toDTO(toUpdate);
     }
 
-    private Item fetchItemByName(String itemName) {
-        Item item = itemRepository.getItemByName(itemName);
-        if(item == null){
-            throw new ItemNotFoundException("Item with name " + itemName +" not found.");
-        }
+    private Item fetchItemById(String itemId) {
+        return itemRepository.getItemById(itemId);
 
-        return item;
     }
+
+
 }

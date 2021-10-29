@@ -40,10 +40,11 @@ public class ItemController {
     }
 
     //PUT
-    @PutMapping(consumes = "application/json", produces = "application/json")
+
+    @PutMapping(path = "/{itemId}",consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto updateItem(@RequestHeader(value = "adminId") String adminId, @RequestBody UpdateItemDto updateItemDto){
-        logger.info("Trying to update item with name " + updateItemDto.getName());
-        return itemService.updateItem(updateItemDto, adminId);
+    public ItemDto updateItem(@RequestHeader(value = "adminId") String adminId, @PathVariable String itemId , @RequestBody UpdateItemDto updateItemDto){
+        logger.info("Trying to update item with name " + itemId);
+        return itemService.updateItem(updateItemDto, itemId ,adminId);
     }
 }

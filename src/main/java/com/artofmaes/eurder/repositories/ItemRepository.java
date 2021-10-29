@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -21,11 +20,11 @@ public class ItemRepository {
         return new ArrayList<>(itemList.values());
     }
 
-    public Item getItemByName(String itemName){
-       Item foundByName = itemList.get(itemName);
-        if(foundByName == null){
-            throw new ItemNotFoundException("Item with name " + itemName + " not found.");
+    public Item getItemById(String itemId){
+       Item foundById = itemList.get(itemId);
+        if(foundById == null){
+            throw new ItemNotFoundException("Item with id " + itemId + " not found.");
         }
-        return foundByName;
+        return foundById;
     }
 }

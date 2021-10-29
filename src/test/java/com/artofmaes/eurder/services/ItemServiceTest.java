@@ -1,6 +1,7 @@
 package com.artofmaes.eurder.services;
 
 import com.artofmaes.eurder.api.dto.item.CreateItemDto;
+import com.artofmaes.eurder.api.dto.item.ItemDto;
 import com.artofmaes.eurder.api.dto.item.UpdateItemDto;
 import com.artofmaes.eurder.api.dto.mappers.ItemMapper;
 import com.artofmaes.eurder.api.dto.mappers.UserMapper;
@@ -73,7 +74,7 @@ public class ItemServiceTest {
     }
 
     @Test
-    void whenUpdatingAnItem_ThrowsExceptionIfUserIsNotAdmin(){
+    void whenUpdatingAnItem_ThrowsExceptionIfUserIsNotAdmin() {
         CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
                 "", "", "12340", "", "");
         UserDto member = userService.createNewUser(createUserDto);
@@ -83,34 +84,27 @@ public class ItemServiceTest {
         UserDto admin = userService.createNewAdmin(createAdminDto);
 
         CreateItemDto createItemDto = new CreateItemDto("Banana", "Nice yellow bananas from the wonderful south", 1.99, 16);
-        CreateItemDto createItemDto2 = new CreateItemDto("Apple", "Nice red apples from the wonderful North", 1.99, 4);
-        itemService.createNewItem(createItemDto, admin.getUserId());
-        itemService.createNewItem(createItemDto2, admin.getUserId());
+        ItemDto bananaItem = itemService.createNewItem(createItemDto, admin.getUserId());
 
         UpdateItemDto updateItemDto = new UpdateItemDto("Banana", "Nice yellow bananas from the wonderful south", 1.99, 9);
 
-        Assertions.assertThrows(UnauthorizedUserException.class, () -> itemService.updateItem(updateItemDto, member.getUserId()));
+        Assertions.assertThrows(UnauthorizedUserException.class, () -> itemService.updateItem(updateItemDto, bananaItem.getItemId(), member.getUserId()));
 
 
     }
 
-//    @Test
-//    void whenUpdatingAnItem_DoesNotThrowExceptionIfUserIsAdmin(){
-//        CreateUserDto createUserDto = new CreateUserDto("Bobby", "From da Block", "bobby@fromdablock.com",
-//                "", "", "12340", "", "");
-//        UserDto member = userService.createNewUser(createUserDto);
-//
-//        CreateAdminDto createAdminDto = new CreateAdminDto("Franky", "From da Hill", "franky@fromdahill.com",
-//                "", "", "12340", "", "");
-//        UserDto admin = userService.createNewAdmin(createAdminDto);
-//
-//        CreateItemDto createItemDto = new CreateItemDto("banana", "Nice yellow bananas from the wonderful south", 1.99, 16);
-//        CreateItemDto createItemDto2 = new CreateItemDto("apple", "Nice red apples from the wonderful North", 1.99, 4);
-//        itemService.createNewItem(createItemDto, admin.getUserId());
-//        itemService.createNewItem(createItemDto2, admin.getUserId());
-//
-//        UpdateItemDto updateItemDto = new UpdateItemDto("banana", "Nice yellow bananas from the wonderful south", 1.99, 9);
-//
-//        Assertions.assertDoesNotThrow(() -> itemService.updateItem(updateItemDto, admin.getUserId()));
-//    }
+    @Test
+    void whenUpdatingAnItem_DoesNotThrowExceptionIfUserIsAdmin() {
+
+        CreateAdminDto createAdminDto = new CreateAdminDto("Franky", "From da Hill", "franky@fromdahill.com",
+                "", "", "12340", "", "");
+        UserDto admin = userService.createNewAdmin(createAdminDto);
+
+        CreateItemDto createItemDto = new CreateItemDto("banana", "Nice yellow bananas from the wonderful south", 1.99, 16);
+        ItemDto bananaItem = itemService.createNewItem(createItemDto, admin.getUserId());
+
+        UpdateItemDto updateItemDto = new UpdateItemDto("banana", "Nice yellow bananas from the wonderful south", 1.99, 9);
+
+        Assertions.assertDoesNotThrow(() -> itemService.updateItem(updateItemDto, bananaItem.getItemId(), admin.getUserId()));
+    }
 }
