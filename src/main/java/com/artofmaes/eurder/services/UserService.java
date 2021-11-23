@@ -28,7 +28,7 @@ public class UserService {
         User user = new User(createUserDto.getFirstName(), createUserDto.getLastName(), createUserDto.getMailAddress(),
                 createUserDto.getStreet(), createUserDto.getStreetNumber(), createUserDto.getPostalCode(),
                 createUserDto.getCity(), createUserDto.getPhoneNumber(), false);
-        userRepository.addUser(user);
+        userRepository.save(user);
         return userMapper.toDTO(user);
     }
 
@@ -36,24 +36,24 @@ public class UserService {
         User user = new User(createAdminDto.getFirstName(), createAdminDto.getLastName(), createAdminDto.getMailAddress(),
                 createAdminDto.getStreet(), createAdminDto.getStreetNumber(), createAdminDto.getPostalCode(),
                 createAdminDto.getCity(), createAdminDto.getPhoneNumber(), true);
-        userRepository.addUser(user);
+        userRepository.save(user);
         return userMapper.toDTO(user);
     }
 
-    public List<UserDto> getAllUsers(String userId){
+    public List<UserDto> getAllUsers(int userId){
         assertAdminId(userId);
-        return userRepository.getUsers().stream()
+        return userRepository.findAll().stream()
                 .map(userMapper::toDTO)
                 .collect(Collectors.toList());
 
     }
 
-    public UserDto getSpecificUser(String adminId, String userId){
+    public UserDto getSpecificUser(int adminId, int userId){
         assertAdminId(adminId);
-        return userMapper.toDTO(userRepository.getUser(userId));
+        return userMapper.toDTO(userRepository.findUserByUserId(userId));
     }
 
-    public void assertAdminId(String userId){
+    public void assertAdminId(int userId){
         User user = fetchUserIfExist(userId);
         if(!user.isAdmin()){
             throw new UnauthorizedUserException("You are not an admin.");
@@ -61,8 +61,8 @@ public class UserService {
 
     }
 
-    private User fetchUserIfExist(String userId) {
-        User user = userRepository.getUser(userId);
+    private User fetchUserIfExist(int userId) {
+        User user = userRepository.findUserByUserId(userId);
         if(user == null){
             throw new NullPointerException("No user found.");
         }

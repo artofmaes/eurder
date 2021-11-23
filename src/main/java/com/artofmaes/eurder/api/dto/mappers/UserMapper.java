@@ -9,17 +9,33 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
-    public Collection<UserDto> toDTO(Collection<User> users) {
-        return users.stream().map(this::toDTO).collect(Collectors.toList());
-    }
 
     public UserDto toDTO(User user) {
-        return new UserDto(user.getUserId(), user.getFirstName(), user.getLastName(), user.getMailAddress(),
-                user.getStreet(), user.getStreetNumber(), user.getPostalCode(), user.getCity(), user.getPhoneNumber(), user.isAdmin());
+        return new UserDto.Builder()
+                .withUserId(user.getUserId())
+                .withFirstName(user.getFirstName())
+                .withLastName(user.getLastName())
+                .withStreet(user.getStreet())
+                .withStreetNumber(user.getStreetNumber())
+                .withPostalCode(user.getPostalCode())
+                .withCity(user.getCity())
+                .withPhoneNumber(user.getPhoneNumber())
+                .withMailAddress(user.getMailAddress())
+                .withAdmin(user.isAdmin())
+                .build();
     }
 
     public User toEntity(UserDto userDto) {
-        return new User(userDto.getFirstName(), userDto.getLastName(), userDto.getMailAddress(),
-                userDto.getStreet(), userDto.getStreetNumber(), userDto.getPostalCode(), userDto.getCity(), userDto.getPhoneNumber(), userDto.isAdmin());
+        return new User.Builder()
+                .withFirstName(userDto.getFirstName())
+                .withLastName(userDto.getLastName())
+                .withStreet(userDto.getStreet())
+                .withStreetNumber(userDto.getStreetNumber())
+                .withPostalCode(userDto.getPostalCode())
+                .withCity(userDto.getCity())
+                .withPhoneNumber(userDto.getPhoneNumber())
+                .withMailAddress(userDto.getMailAddress())
+                .withAdmin(userDto.isAdmin())
+                .build();
     }
 }

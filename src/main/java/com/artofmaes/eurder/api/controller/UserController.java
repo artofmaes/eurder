@@ -35,14 +35,14 @@ public class UserController {
     //GET
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getAllUsers(@RequestHeader(value = "adminId") String adminId){
+    public List<UserDto> getAllUsers(@RequestHeader(value = "adminId") int adminId){
         logger.info("Gathering all members...");
         return userService.getAllUsers(adminId);
     }
 
     @GetMapping(path = "/{userId}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getSpecificUser(@RequestHeader(value = "adminId") String adminId, @PathVariable String userId){
+    public UserDto getSpecificUser(@RequestHeader(value = "adminId") int adminId, @PathVariable int userId){
         logger.info("Getting data on specific user..");
         return userService.getSpecificUser(adminId, userId);
     }
