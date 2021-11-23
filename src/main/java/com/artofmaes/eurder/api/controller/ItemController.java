@@ -26,7 +26,7 @@ public class ItemController {
     //POST
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto createItem(@RequestHeader(value = "adminId") String adminId, @RequestBody CreateItemDto createItemDto){
+    public ItemDto createItem(@RequestHeader(value = "adminId") int adminId, @RequestBody CreateItemDto createItemDto){
         logger.info("Trying to create an item...");
         return itemService.createNewItem(createItemDto, adminId);
     }
@@ -34,7 +34,7 @@ public class ItemController {
     //GET
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDto> getAllItems(@RequestHeader(value = "adminId") String adminId){
+    public List<ItemDto> getAllItems(@RequestHeader(value = "adminId") int adminId){
         logger.info("Trying to gather all items by request of user " + adminId);
         return itemService.getAllItems(adminId);
     }
@@ -43,7 +43,7 @@ public class ItemController {
 
     @PutMapping(path = "/{itemId}",consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto updateItem(@RequestHeader(value = "adminId") String adminId, @PathVariable String itemId , @RequestBody UpdateItemDto updateItemDto){
+    public ItemDto updateItem(@RequestHeader(value = "adminId") int adminId, @PathVariable int itemId , @RequestBody UpdateItemDto updateItemDto){
         logger.info("Trying to update item with name " + itemId);
         return itemService.updateItem(updateItemDto, itemId ,adminId);
     }

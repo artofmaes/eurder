@@ -1,18 +1,32 @@
 package com.artofmaes.eurder.domain;
 
+import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "item")
 public class Item {
-    private final String itemId;
-    private final StockSize stockSize;
+    @Id
+    @SequenceGenerator(name = "item_id_seq", sequenceName = "item_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_id_seq")
+    private int itemId;
 
+    @Column(name = "item_name")
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "price")
     private double price;
+    @Column(name = "stock_amount")
     private int stock;
+    @Column(name = "stock_size")
+    private StockSize stockSize;
+
+    public Item() {
+    }
 
     public Item(String name, String description, double price, int stock) {
-        this.itemId = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
         this.price = price;
@@ -20,28 +34,20 @@ public class Item {
         this.stockSize = setStockSize(stock);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    private StockSize setStockSize(int stock) {
+        if(stock == 0){
+            return StockSize.STOCK_EMPTY;
+        }else if(stock > 0 && stock < 5){
+            return StockSize.STOCK_LOW;
+        } else if (stock >= 5 && stock < 10) {
+            return StockSize.STOCK_MEDIUM;
+        }else{
+            return StockSize.STOCK_HIGH;
+        }
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
-    }
-
-    public StockSize getStockSize() {
-        return stockSize;
     }
 
     public String getName() {
@@ -60,19 +66,65 @@ public class Item {
         return stock;
     }
 
-    private StockSize setStockSize(int stock) {
-        if(stock == 0){
-            return StockSize.STOCK_EMPTY;
-        }else if(stock > 0 && stock < 5){
-            return StockSize.STOCK_LOW;
-        } else if (stock >= 5 && stock < 10) {
-            return StockSize.STOCK_MEDIUM;
-        }else{
-            return StockSize.STOCK_HIGH;
-        }
+    public StockSize getStockSize() {
+        return stockSize;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return Objects.equals(name, item.name) && Objects.equals(description, item.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description);
+    }
+
+
 
     public enum StockSize{
         STOCK_HIGH,STOCK_MEDIUM,STOCK_LOW,STOCK_EMPTY
+    }
+
+    public static final class Builder {
+        private String name;
+        private String description;
+        private double price;
+        private int stock;
+        private StockSize stockSize;
+
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder withPrice(double price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder withStock(int stock) {
+            this.stock = stock;
+            return this;
+        }
+
+        public Builder withStockSize(StockSize stockSize) {
+            this.stockSize = stockSize;
+            return this;
+        }
+
+        public Item build() {
+            Item item = new Item(name, description, price, stock);
+            item.stockSize = this.stockSize;
+            return item;
+        }
     }
 }

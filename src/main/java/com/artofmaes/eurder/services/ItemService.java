@@ -28,35 +28,34 @@ public class ItemService {
         this.userService = userService;
     }
 
-    public ItemDto createNewItem(CreateItemDto createItemDto, String adminId){
+    public ItemDto createNewItem(CreateItemDto createItemDto, int adminId){
        userService.assertAdminId(adminId);
         Item item = new Item(createItemDto.getName(), createItemDto.getDescription(),
                 createItemDto.getPrice(), createItemDto.getStock());
-        itemRepository.addItem(item);
+        itemRepository.save(item);
        return itemMapper.toDTO(item);
     }
 
-    public List<ItemDto> getAllItems(String adminId){
+    public List<ItemDto> getAllItems(int adminId){
         userService.assertAdminId(adminId);
-        return itemRepository.getItems().stream()
+        return itemRepository.findAll().stream()
                 .map(itemMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public ItemDto updateItem(UpdateItemDto updateItemDto, String itemId ,String adminId) {
+    public ItemDto updateItem(UpdateItemDto updateItemDto, int itemId ,int adminId) {
         userService.assertAdminId(adminId);
-        Item toUpdate = fetchItemById(itemId);
-        toUpdate.setName(updateItemDto.getName());
-        toUpdate.setDescription(updateItemDto.getDescription());
-        toUpdate.setPrice(updateItemDto.getPrice());
-        toUpdate.setStock(updateItemDto.getStock());
+        Item item = itemRepository.findItemByItemId(itemId);
 
-        itemRepository.addItem(toUpdate);
-        return itemMapper.toDTO(toUpdate);
+        return null;
     }
 
-    private Item fetchItemById(String itemId) {
-        return itemRepository.getItemById(itemId);
+    private ItemDto fetchItemById(int itemId) {
+        var toCheck =  itemRepository.findById(itemId);
+        if(toCheck.isEmpty()){
+            throw new ItemNotFoundException();
+        }
+        return itemMapper.toDTO(toCheck.get());
 
     }
 
