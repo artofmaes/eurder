@@ -20,6 +20,7 @@ public class User {
     @Id
     @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
+    @Column(name = "id")
     private int userId;
 
     @Column(name = "first_name")

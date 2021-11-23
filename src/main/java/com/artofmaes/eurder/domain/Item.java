@@ -10,6 +10,7 @@ public class Item {
     @Id
     @SequenceGenerator(name = "item_id_seq", sequenceName = "item_id_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_id_seq")
+    @Column(name = "id")
     private int itemId;
 
     @Column(name = "item_name")

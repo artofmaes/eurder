@@ -47,6 +47,7 @@ public class ItemService {
         userService.assertAdminId(adminId);
         Item item = itemRepository.findItemByItemId(itemId);
 
+//        item.s
         return null;
     }
 
